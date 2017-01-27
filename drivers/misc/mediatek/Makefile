@@ -26,7 +26,6 @@ obj-$(CONFIG_MTK_CIRQ) += cirq/
 endif
 
 obj-$(CONFIG_MTK_IRQ) += irq/
-obj-$(CONFIG_MTK_CPU_STRESS)	+= cpu_stress/
 obj-$(CONFIG_MTK_LASTPC)	    += lastpc/
 obj-$(CONFIG_MTK_DBG_DUMP) += dbg_dump/
 
@@ -262,8 +261,6 @@ obj-$(CONFIG_MTK_FREQ_HOPPING)	+= freqhopping/
 obj-$(CONFIG_SECURITY_SELINUX)	+= selinux_warning/
 # MTK PASR SW flow
 obj-$(CONFIG_MTKPASR)	+= mtkpasr/
-
-obj-$(CONFIG_MTK_TC1_FEATURE)	+= tc1_interface/
 
 obj-$(CONFIG_MTK_SWITCH_TX_POWER) += sw_tx_power/
 

@@ -5,12 +5,10 @@ include $(srctree)/drivers/misc/mediatek/Makefile.custom
 
 #obj-y += sensordriver/sensordrive_lens.o
  
-ifeq ($(CONFIG_ARCH_MT8127),y)
-		obj-$(CONFIG_MTK_LENS_FM50AF_SUPPORT)      += mt8127/fm50af/
-else
 	ifeq ($(CONFIG_ARCH_MT6580),y)
 		obj-$(CONFIG_MTK_LENS_DW9814AF_SUPPORT)      += mt6580/dw9814af/
 		obj-$(CONFIG_MTK_LENS_DW9714AF_SUPPORT)      += mt6580/dw9714af/
+		obj-$(CONFIG_MTK_LENS_FM50AF_SUPPORT)      += mt6580/fm50af/
 	else
 		ifeq ($(CONFIG_ARCH_MT6592),y)
 		obj-$(CONFIG_MTK_LENS_DUMMYLENS_SUPPORT) +=  mt6592/dummy_lens/
@@ -103,8 +101,6 @@ else
 						obj-$(CONFIG_MTK_LENS_LC898122AF_SUPPORT) += common/lc898122af/
 						obj-$(CONFIG_MTK_LENS_LC898212AF_SUPPORT)    += common/lc898212af/
 						obj-$(CONFIG_MTK_LENS_AK7345AF_SUPPORT)    += common/ak7345af/	                			
-						obj-$(CONFIG_MTK_LENS_WV511AAF_SUPPORT)    += mt8163/wv511aaf/              			
-						endif
 					endif
 				endif
 			endif
