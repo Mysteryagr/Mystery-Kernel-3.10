@@ -1,6 +1,0 @@
-
-config MTK_EINT
-  bool "Enable MTK EINT Driver"
-  default y
-  help
-     This enable MTK eint driver.

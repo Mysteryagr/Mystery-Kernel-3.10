@@ -1,6 +1,0 @@
-
-config MTK_WATCHPOINT
-  bool "Enable MTK WATCH POINTER Driver"
-  default y
-  help
-     This enable MTK watch pointer driver.
