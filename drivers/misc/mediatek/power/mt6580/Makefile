@@ -1,5 +1,7 @@
 include $(srctree)/drivers/misc/mediatek/Makefile.custom
 
+ccflags-y += -I$(srctree)/drivers/misc/mediatek/mach/$(CONFIG_MTK_PLATFORM)/$(ARCH_MTK_PROJECT)/power/
+
 obj-$(CONFIG_MTK_PMIC)          += pmic.o upmu_common.o pmic_auxadc.o pmic_chr_type_det.o 
 
 ifeq ($(CONFIG_MTK_PMIC_DVT_SUPPORT),y)

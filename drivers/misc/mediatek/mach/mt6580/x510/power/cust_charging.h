@@ -109,6 +109,10 @@
 #define CONFIG_DIS_CHECK_BATTERY
 #endif
 
+#ifdef MTK_BQ24158_SUPPORT
+#define BQ24158_BUSNUM 1
+#endif
+
 #ifdef CONFIG_MTK_FAN5405_SUPPORT
 #define FAN5405_BUSNUM 1
 #endif
