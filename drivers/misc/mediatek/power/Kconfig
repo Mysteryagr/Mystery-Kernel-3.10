@@ -7,6 +7,15 @@ config MT6326_PMIC
 	---help---
           MediaTek PMIC 6326 Driver
 
+config MTK_BQ24158_SUPPORT
+	bool "MTK_BQ24158_SUPPORT"
+	default n
+	---help---
+	Mediatek TI BQ24158 driver.
+	Set y to support this driver.
+	Set n and choose other chargers.
+	This driver uses I2c bus. 
+
 config MTK_PMIC
 	tristate "MediaTek Power Management Unit Driver"
 	default y
