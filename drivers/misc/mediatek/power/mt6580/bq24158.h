@@ -19,31 +19,8 @@
 
 #ifndef _bq24158_SW_H_
 #define _bq24158_SW_H_
-#include <mt-plat/mt_typedefs.h>
 
-#include <linux/kernel.h>
-#include <linux/mm.h>
-#include <linux/mm_types.h>
-#include <linux/module.h>
-#include <linux/types.h>
-#include <linux/slab.h>
-#include <linux/vmalloc.h>
-#include <linux/gpio.h>
-#include <linux/device.h>
-
-#ifdef CONFIG_OF
-#include <linux/of.h>
-#include <linux/of_irq.h>
-#include <linux/of_address.h>
-#include <linux/of_device.h>
-#include <linux/regulator/consumer.h>
-#include <linux/clk.h>
-#include <linux/pinctrl/consumer.h>
-#include <linux/of_gpio.h>
-#endif
 //#define HIGH_BATTERY_VOLTAGE_SUPPORT
-
-extern unsigned int charger_enable_pin;
 
 #define bq24158_CON0      0x00
 #define bq24158_CON1      0x01
@@ -157,46 +134,46 @@ extern unsigned int charger_enable_pin;
   *
   *********************************************************/
 //CON0----------------------------------------------------
-extern void bq24158_set_tmr_rst(u32 val);
-extern u32 bq24158_get_otg_status(void);
-extern void bq24158_set_en_stat(u32 val);
-extern u32 bq24158_get_chip_status(void);
-extern u32 bq24158_get_boost_status(void);
-extern u32 bq24158_get_fault_status(void);
+extern void bq24158_set_tmr_rst(kal_uint32 val);
+extern kal_uint32 bq24158_get_otg_status(void);
+extern void bq24158_set_en_stat(kal_uint32 val);
+extern kal_uint32 bq24158_get_chip_status(void);
+extern kal_uint32 bq24158_get_boost_status(void);
+extern kal_uint32 bq24158_get_fault_status(void);
 //CON1----------------------------------------------------
-extern void bq24158_set_input_charging_current(u32 val);
-extern void bq24158_set_v_low(u32 val);
-extern void bq24158_set_te(u32 val);
-extern void bq24158_set_ce(u32 val);
-extern void bq24158_set_hz_mode(u32 val);
-extern void bq24158_set_opa_mode(u32 val);
+extern void bq24158_set_input_charging_current(kal_uint32 val);
+extern void bq24158_set_v_low(kal_uint32 val);
+extern void bq24158_set_te(kal_uint32 val);
+extern void bq24158_set_ce(kal_uint32 val);
+extern void bq24158_set_hz_mode(kal_uint32 val);
+extern void bq24158_set_opa_mode(kal_uint32 val);
 //CON2----------------------------------------------------
-extern void bq24158_set_oreg(u32 val);
-extern void bq24158_set_otg_pl(u32 val);
-extern void bq24158_set_otg_en(u32 val);
+extern void bq24158_set_oreg(kal_uint32 val);
+extern void bq24158_set_otg_pl(kal_uint32 val);
+extern void bq24158_set_otg_en(kal_uint32 val);
 //CON3----------------------------------------------------
-extern u32 bq24158_get_vender_code(void);
-extern u32 bq24158_get_pn(void);
-extern u32 bq24158_get_revision(void);
+extern kal_uint32 bq24158_get_vender_code(void);
+extern kal_uint32 bq24158_get_pn(void);
+extern kal_uint32 bq24158_get_revision(void);
 //CON4----------------------------------------------------
-extern void bq24158_set_reset(u32 val);
-extern void bq24158_set_iocharge(u32 val);
-extern void bq24158_set_iterm(u32 val);
+extern void bq24158_set_reset(kal_uint32 val);
+extern void bq24158_set_iocharge(kal_uint32 val);
+extern void bq24158_set_iterm(kal_uint32 val);
 //CON5----------------------------------------------------
-extern void bq24158_set_dis_vreg(u32 val);
-extern void bq24158_set_io_level(u32 val);
-extern u32 bq24158_get_sp_status(void);
-extern u32 bq24158_get_en_level(void);
-extern void bq24158_set_vsp(u32 val);
+extern void bq24158_set_dis_vreg(kal_uint32 val);
+extern void bq24158_set_io_level(kal_uint32 val);
+extern kal_uint32 bq24158_get_sp_status(void);
+extern kal_uint32 bq24158_get_en_level(void);
+extern void bq24158_set_vsp(kal_uint32 val);
 //CON6----------------------------------------------------
-extern void bq24158_set_i_safe(u32 val);
-extern void bq24158_set_v_safe(u32 val);
+extern void bq24158_set_i_safe(kal_uint32 val);
+extern void bq24158_set_v_safe(kal_uint32 val);
 //---------------------------------------------------------
 extern void bq24158_dump_register(void);
-extern u32 bq24158_config_interface_liao (u8 RegNum, u8 val);
+extern kal_uint32 bq24158_config_interface_liao (kal_uint8 RegNum, kal_uint8 val);
 
-extern u32 bq24158_read_interface (u8 RegNum, u8 *val, u8 MASK, u8 SHIFT);
-extern u32 bq24158_config_interface (u8 RegNum, u8 val, u8 MASK, u8 SHIFT);
+extern kal_uint32 bq24158_read_interface (kal_uint8 RegNum, kal_uint8 *val, kal_uint8 MASK, kal_uint8 SHIFT);
+extern kal_uint32 bq24158_config_interface (kal_uint8 RegNum, kal_uint8 val, kal_uint8 MASK, kal_uint8 SHIFT);
 
 #endif // _bq24158_SW_H_
 
