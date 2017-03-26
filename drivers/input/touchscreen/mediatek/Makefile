@@ -51,6 +51,10 @@ ifeq ($(CONFIG_TOUCHSCREEN_MTK_GT9XXTB_HOTKNOT),y)
 obj-y	+=  GT9XXTB_hotknot/
 endif
 
+ifeq ($(CONFIG_TOUCHSCREEN_MTK_GT9XX_HOTKNOT_X510),y)
+obj-y	+=  GT9XX_hotknot_x510/
+endif
+
 ifeq ($(CONFIG_TOUCHSCREEN_S7020),y)
 obj-y	+=  S7020/
 endif
