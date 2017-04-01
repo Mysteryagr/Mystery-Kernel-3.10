@@ -96,7 +96,7 @@ static void lcm_get_params(LCM_PARAMS *params)
     params->dsi.horizontal_frontporch				= 60;
     params->dsi.horizontal_active_pixel				= FRAME_WIDTH;
 
-	params->dsi.PLL_CLOCK = 218; //this value must be in MTK suggested table
+	params->dsi.PLL_CLOCK = 299; //this value must be in MTK suggested table
 	params->dsi.ssc_disable                         = 1;
 
     params->dsi.noncont_clock=1;
@@ -104,9 +104,9 @@ static void lcm_get_params(LCM_PARAMS *params)
 
 	params->dsi.esd_check_enable = 1;
 	params->dsi.customization_esd_check_enable = 1;
-	params->dsi.lcm_esd_check_table[0].cmd          = 0x0a;
+	params->dsi.lcm_esd_check_table[0].cmd          = 0x53;
 	params->dsi.lcm_esd_check_table[0].count        = 1;
-	params->dsi.lcm_esd_check_table[0].para_list[0] = 0x1c;
+	params->dsi.lcm_esd_check_table[0].para_list[0] = 0x24;
 	
 	params->dsi.lcm_esd_check_table[1].cmd          = 0xd9;
 	params->dsi.lcm_esd_check_table[1].count        = 1;
