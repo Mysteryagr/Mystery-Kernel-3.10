@@ -34,25 +34,19 @@
 *
 *****************************************************************************/
 
-#ifdef BUILD_LK
-#else
+#ifndef BUILD_LK
 #include <linux/string.h>
+#include <mach/mt_gpio.h>
+#else
+#include <platform/mt_gpio.h>
 #endif
 
 #include "lcm_drv.h"
-//yufeng
-#ifdef BUILD_LK
-    #include <platform/mt_gpio.h>
-#elif defined(BUILD_UBOOT)
-    #include <asm/arch/mt_gpio.h>
-#else
-        #include <mt-plat/mt_gpio.h>
-#endif
 
 // ---------------------------------------------------------------------------
 //  Local Constants
 // ---------------------------------------------------------------------------
-
+#include <cust_adc.h>
 #define FRAME_WIDTH                                          (720)
 #define FRAME_HEIGHT                                         (1280)
 
