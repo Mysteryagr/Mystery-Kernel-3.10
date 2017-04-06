@@ -93,15 +93,15 @@ static void lcm_get_params(LCM_PARAMS *params)
     params->dsi.packet_size=256;
     params->dsi.PS=LCM_PACKED_PS_24BIT_RGB888;
 
-    params->dsi.vertical_sync_active				= 4;
-    params->dsi.vertical_backporch					= 14;
-    params->dsi.vertical_frontporch					= 20;
-    params->dsi.vertical_active_line				= FRAME_HEIGHT;
+    params->dsi.vertical_sync_active                = 8;
+    params->dsi.vertical_backporch                  = 14;
+    params->dsi.vertical_frontporch                 = 20;
+    params->dsi.vertical_active_line                = FRAME_HEIGHT;
 
-    params->dsi.horizontal_sync_active				= 20;
-    params->dsi.horizontal_backporch				= 60;
-    params->dsi.horizontal_frontporch				= 60;
-    params->dsi.horizontal_active_pixel				= FRAME_WIDTH;
+    params->dsi.horizontal_sync_active              = 12;
+    params->dsi.horizontal_backporch                = 110;
+    params->dsi.horizontal_frontporch               = 110;
+    params->dsi.horizontal_active_pixel             = FRAME_WIDTH;
 
 	params->dsi.PLL_CLOCK = 299; //this value must be in MTK suggested table
 	params->dsi.ssc_disable                         = 1;
