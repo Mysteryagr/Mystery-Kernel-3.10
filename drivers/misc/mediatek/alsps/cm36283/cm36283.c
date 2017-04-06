@@ -25,9 +25,9 @@
 #include <linux/platform_device.h>
 #include <asm/atomic.h>
 
-#include <mach/mt_typedefs.h>
+#include "mt_typedefs.h"
 #include <mach/mt_gpio.h>
-#include <mach/mt_pm_ldo.h>
+#include "mt_pm_ldo.h"
 
 #define POWER_NONE_MACRO MT65XX_POWER_NONE
 
@@ -36,7 +36,7 @@
 #include <linux/sensors_io.h>
 #include <asm/io.h>
 #include <cust_eint.h>
-#include <cust_alsps.h>
+#include "cust_alsps.h"
 #include "cm36283.h"
 #include <linux/sched.h>
 /******************************************************************************
@@ -55,25 +55,26 @@
 #define I2C_FLAG_WRITE	0
 #define I2C_FLAG_READ	1
 
+
 /******************************************************************************
  * extern functions
 *******************************************************************************/
-#ifdef CUST_EINT_ALS_TYPE
-extern void mt_eint_mask(unsigned int eint_num);
-extern void mt_eint_unmask(unsigned int eint_num);
-extern void mt_eint_set_hw_debounce(unsigned int eint_num, unsigned int ms);
-extern void mt_eint_set_polarity(unsigned int eint_num, unsigned int pol);
-extern unsigned int mt_eint_set_sens(unsigned int eint_num, unsigned int sens);
-extern void mt_eint_registration(unsigned int eint_num, unsigned int flow, void (EINT_FUNC_PTR)(void), unsigned int is_auto_umask);
-extern void mt_eint_print_status(void);
-#else
+
 extern void mt65xx_eint_mask(unsigned int line);
 extern void mt65xx_eint_unmask(unsigned int line);
 extern void mt65xx_eint_set_hw_debounce(unsigned int eint_num, unsigned int ms);
 extern void mt65xx_eint_set_polarity(unsigned int eint_num, unsigned int pol);
 extern unsigned int mt65xx_eint_set_sens(unsigned int eint_num, unsigned int sens);
 extern void mt65xx_eint_registration(unsigned int eint_num, unsigned int is_deb_en, unsigned int pol, void (EINT_FUNC_PTR)(void), unsigned int is_auto_umask);
-#endif
+
+#define mt65xx_eint_mask                mt_eint_mask
+#define mt65xx_eint_unmask              mt_eint_unmask
+#define mt65xx_eint_set_hw_debounce     mt_eint_set_hw_debounce
+#define mt65xx_eint_set_polarity        mt_eint_set_polarity
+#define mt65xx_eint_set_sens            mt_eint_set_sens
+#define mt65xx_eint_print_status        mt_eint_print_status
+#define mt65xx_eint_registration mt_eint_registration
+
 /*----------------------------------------------------------------------------*/
 static int cm36283_i2c_probe(struct i2c_client *client, const struct i2c_device_id *id); 
 static int cm36283_i2c_remove(struct i2c_client *client);
