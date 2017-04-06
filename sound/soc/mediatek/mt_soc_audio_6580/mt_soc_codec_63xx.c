@@ -504,16 +504,14 @@ static void Apply_Speaker_Gain(void)
 
 void setHpDcCalibration(unsigned int type, int dc_cali_value)
 {
-    printk("%s ,type=%d, dc_cali_value = %d\n", __func__, type, dc_cali_value);
+    printk("%s ,type=%d, value = %d\n", __func__, type, dc_cali_value);
     if (type == AUDIO_ANALOG_DEVICE_OUT_HEADSETR)
     {
-    	/* ABB_AFE_CON3, 1 step is (1/32768) * 1800mV = 0.0549 */
-    	/* mHpRightDcCalibration = dc_cali_value/0.0549 (= dc_cali_value*18 ) */
-        mHpRightDcCalibration = dc_cali_value * 18;
+        mHpRightDcCalibration = dc_cali_value;
     }
     else if(type == AUDIO_ANALOG_DEVICE_OUT_HEADSETL)
     {
-        mHpLeftDcCalibration = dc_cali_value * 18;
+        mHpLeftDcCalibration = dc_cali_value;
     }
     else
     {
@@ -544,14 +542,12 @@ static int mHprTrimOffset = 2048;
 void SetHplTrimOffset(int Offset)
 {
     printk("%s Offset = %d\n", __func__, Offset);
-    /* transform to 1.8V scale */
     setHpDcCalibration(AUDIO_ANALOG_DEVICE_OUT_HEADSETL, (Offset * 18) / 10);
 }
 
 void SetHprTrimOffset(int Offset)
 {
     printk("%s Offset = %d\n", __func__, Offset);
-    /* transform to 1.8V scale */
     setHpDcCalibration(AUDIO_ANALOG_DEVICE_OUT_HEADSETR, (Offset * 18) / 10);
 }
 
@@ -1338,18 +1334,19 @@ static void Audio_Amp_Change(int channels , bool enable)
 
             //need to modify sequence
             //DC compensation setting
-            printk("%s, mHpRightDcCalibration [%d] mHpLeftDcCalibration [%d], mIsExtSPKUse=%x\n",__func__, mHpRightDcCalibration, mHpLeftDcCalibration,mIsExtSPKUse);
+            printk("%s, mHpRightDcCalibration [%d] mHpLeftDcCalibration [%d], mIsExtSPKUse=%x \n",__func__, mHpRightDcCalibration, mHpLeftDcCalibration,mIsExtSPKUse);
             Ana_Set_Reg(ABB_AFE_CON3, mHpLeftDcCalibration, 0xffff); // LCH cpmpensation value
             Ana_Set_Reg(ABB_AFE_CON4, mHpRightDcCalibration, 0xffff); // RCH cpmpensation value
             Ana_Set_Reg(ABB_AFE_CON10, 0x0001, 0x0001); // enable DC cpmpensation
             DCChangeTrigger();//Trigger DC compensation
-
+        
             Ana_Set_Reg(AUDTOP_CON6, 0xF7F2, 0xffff); // Enable 2.4V. Enable HalfV buffer for HP VCM generation.Enable audio clock
             Ana_Set_Reg(AUDTOP_CON0, 0x7000, 0xf000); // enable clean 1.35VCM buffer in audioUL
             Ana_Set_Reg(AUDTOP_CON5, 0x0014, 0xffff); // set RCH/LCH buffer gain to smallest -5dB
             if (mIsExtSPKUse)
             {
-                Ana_Set_Reg(AUDTOP_CON4, 0x005C, 0xffff); // enable audio bias. only enable audio-R DAC, HP buffers (L needs to turn off)
+            //modify by yangbo, don't modify again please!
+                Ana_Set_Reg(AUDTOP_CON4, 0x003C, 0xffff); // enable audio bias. only enable audio-R DAC, HP buffers (L needs to turn off)
             }
             else
             {
@@ -1399,13 +1396,12 @@ static void Audio_Amp_Change(int channels , bool enable)
         else if (channels == AUDIO_ANALOG_CHANNELS_RIGHT1)
         {
         }
-
-#if 0	/* no need to reset the DC compensation value to fix the pop noise when turn off */
-	Ana_Set_Reg(ABB_AFE_CON3, 0, 0xffff);	/* LCH cancel DC */
-	Ana_Set_Reg(ABB_AFE_CON4, 0, 0xffff);	/* RCH cancel DC */
-	Ana_Set_Reg(ABB_AFE_CON10, 0x0000, 0x0001);	/* enable DC cpmpensation */
-	DCChangeTrigger();	/* Trigger DC compensation */
-#endif
+        
+        Ana_Set_Reg(ABB_AFE_CON3, 0, 0xffff); // LCH cancel DC
+        Ana_Set_Reg(ABB_AFE_CON4, 0, 0xffff); // RCH cancel DC
+        Ana_Set_Reg(ABB_AFE_CON10, 0x0000, 0x0001); // enable DC cpmpensation
+        DCChangeTrigger();//Trigger DC compensation
+        
         if (GetDLStatus() == false)
         {
 #if 0 // todo        
@@ -1520,6 +1516,7 @@ static void Voice_Amp_Change(bool enable)
         {
             TurnOnDacPower();
             printk("Voice_Amp_Change on amp\n");
+
             //set analog part (voice HS playback)
             Ana_Set_Reg(AUDTOP_CON7, 0x2430, 0xffff); // Set voice buffer to smallest -22dB.
             Ana_Set_Reg(AUDTOP_CON6, 0xB7F6, 0xffff); // enable input short of HP to prevent voice signal leakage . Enable 2.4V.
@@ -1606,7 +1603,11 @@ static void Speaker_Amp_Change(bool enable)
         Ana_Set_Reg(AUDTOP_CON0, 0x7000, 0xf000); // enable clean 1.35VCM buffer in audioUL
         Ana_Set_Reg(AUDTOP_CON4, 0x0014, 0xffff); // enable audio bias. enable LCH DAC
         //udelay(10 * 1000);
+
+#ifdef CONFIG_MTK_SPEAKER
+
         mdelay(10);
+
         if (Speaker_mode == AUDIO_SPEAKER_MODE_RECEIVER)
         {
             Ana_Set_Reg(AUDTOP_CON7, 0x35B0, 0xffff); // enable voice buffer and +1dB gain. Inter-connect voice buffer to SPK AMP
@@ -1618,7 +1619,6 @@ static void Speaker_Amp_Change(bool enable)
         Ana_Set_Reg(TOP_CKPDN1_CLR, 0x000E, 0x000E); // Speaker clock
 
         
-#ifdef CONFIG_MTK_SPEAKER
         if (Speaker_mode == AUDIO_SPEAKER_MODE_D)
         {
             Speaker_ClassD_Open();
@@ -1631,7 +1631,6 @@ static void Speaker_Amp_Change(bool enable)
         {
             Speaker_ReveiverMode_Open();
         }
-#endif
         Ana_Set_Reg(SPK_CON12, 0x0A00, 0xffff); // spk output stage enable and enable
 
         if (Speaker_mode != AUDIO_SPEAKER_MODE_RECEIVER)    //2in1 speaker do not need this
@@ -1643,10 +1642,13 @@ static void Speaker_Amp_Change(bool enable)
             }
         }
         Apply_Speaker_Gain();
+#endif
+		
     }
     else
     {
         printk("turn off Speaker_Amp_Change \n");
+#ifdef CONFIG_MTK_SPEAKER		
         if (Speaker_mode != AUDIO_SPEAKER_MODE_RECEIVER)    //2in1 speaker do not need this
         {
             #if 0
@@ -1712,7 +1714,6 @@ static void Speaker_Amp_Change(bool enable)
             
         }
         
-#ifdef CONFIG_MTK_SPEAKER
         if (Speaker_mode == AUDIO_SPEAKER_MODE_D)
         {
             Speaker_ClassD_close();
@@ -1771,7 +1772,7 @@ static int Speaker_Amp_Set(struct snd_kcontrol *kcontrol, struct snd_ctl_elem_va
     return 0;
 }
 
-#ifdef CONFIG_OF
+#if 0//def CONFIG_OF
 static unsigned int pin_extspkamp, pin_vowclk, pin_audmiso;
 static unsigned int pin_mode_extspkamp, pin_mode_vowclk, pin_mode_audmiso;
 
@@ -2057,13 +2058,13 @@ static void Headset_Speaker_Amp_Change(bool enable)
 
         //Ana_Set_Reg(AUDDEC_ANA_CON0, 0xF20F, 0xffff); //Disable HPR/HPL
         if (GetDLStatus() == false)
-        {
-#if 0	/* do not reset DC calibration value when turn off to fix pop noise issue when turn off */
-		Ana_Set_Reg(ABB_AFE_CON3, 0, 0xffff);	/* LCH cancel DC */
-		Ana_Set_Reg(ABB_AFE_CON4, 0, 0xffff);	/* RCH cancel DC */
-		Ana_Set_Reg(ABB_AFE_CON10, 0x0000, 0x0001);	/* enable DC cpmpensation */
-		DCChangeTrigger();	/* Trigger DC compensation */
-#endif
+        {   
+            
+            Ana_Set_Reg(ABB_AFE_CON3, 0, 0xffff); // LCH cancel DC
+            Ana_Set_Reg(ABB_AFE_CON4, 0, 0xffff); // RCH cancel DC
+            Ana_Set_Reg(ABB_AFE_CON10, 0x0000, 0x0001); // enable DC cpmpensation
+            DCChangeTrigger();//Trigger DC compensation
+            
             TurnOffDacPower();
         }
     }
@@ -3904,7 +3905,7 @@ void InitCodecDefault(void)
     mCodec_data->mAudio_Ana_Volume[AUDIO_ANALOG_VOLUME_MICAMP2] = 3;
     mCodec_data->mAudio_Ana_Volume[AUDIO_ANALOG_VOLUME_MICAMP3] = 3;
     mCodec_data->mAudio_Ana_Volume[AUDIO_ANALOG_VOLUME_MICAMP4] = 3;
-    mCodec_data->mAudio_Ana_Volume[AUDIO_ANALOG_VOLUME_HPOUTL] = 8;
+    mCodec_data->mAudio_Ana_Volume[AUDIO_ANALOG_VOLUME_HPOUTR] = 8;
     mCodec_data->mAudio_Ana_Volume[AUDIO_ANALOG_VOLUME_HPOUTR] = 8;
 
     mCodec_data->mAudio_Ana_Mux[AUDIO_ANALOG_MUX_IN_MIC1] = AUDIO_ANALOG_AUDIOANALOG_INPUT_PREAMP;
