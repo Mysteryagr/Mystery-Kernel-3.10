@@ -1014,6 +1014,21 @@ config TOUCHSCREEN_TPS6507X
 	  To compile this driver as a module, choose M here: the
 	  module will be called tps6507x_ts.
 
+config TOUCHSCREEN_SWEEP2WAKE
+	tristate "Sweep2Wake for touchscreens"
+	select TOUCHSCREEN_PREVENT_SLEEP
+	default n
+
+config TOUCHSCREEN_DOUBLETAP2WAKE
+	tristate "DoubleTap2Wake for touchscreens"
+	select TOUCHSCREEN_PREVENT_SLEEP
+	default n
+
+config TOUCHSCREEN_TAP2UNLOCK
+	tristate "Tap to unlock for touchscreens"
+	select TOUCHSCREEN_PREVENT_SLEEP
+	default y
+
 config TOUCHSCREEN_SYNAPTICS_S3528
 	tristate "Synaptics S7020 touchscreen"
 	depends on I2C
