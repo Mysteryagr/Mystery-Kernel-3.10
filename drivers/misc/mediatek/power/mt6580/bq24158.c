@@ -19,7 +19,6 @@
 #include <linux/hwmsen_helper.h>
 #include <linux/xlog.h>
 
-
 #include <mach/mt_typedefs.h>
 #include <mach/mt_gpio.h>
 #include <mach/mt_pm_ldo.h>
@@ -28,6 +27,7 @@
 #include "cust_charging.h"
 #include <mach/charging.h>
 
+#define BQ24158_BUSNUM 1
 
 /**********************************************************
   *

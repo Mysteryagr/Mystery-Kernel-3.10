@@ -29,10 +29,10 @@
  ****************************************************************************/
 #include <mach/charging.h>
 #include "bq24158.h"
-#include <mach/upmu_common.h>
+//#include <mach/upmu_common.h>
 #include <mach/mt_gpio.h>
 #include <cust_gpio_usage.h>
-#include <mach/upmu_hw.h>
+#include "upmu_hw.h"
 #include <linux/xlog.h>
 #include <linux/delay.h>
 #include <mach/mt_sleep.h>
