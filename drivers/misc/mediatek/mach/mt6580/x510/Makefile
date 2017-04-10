@@ -13,8 +13,8 @@ endif
 #obj-y   +=  flashlight/constant_flashlight/
 obj-$(CONFIG_MTK_VIBRATOR)   +=  vibrator/
 obj-$(CONFIG_MTK_LEDS)   +=  leds/
-#obj-y   +=  keypad/
-#obj-y   +=  sound/
+obj-y   +=  keypad/
+obj-y   +=  sound/
 obj-$(CONFIG_MTK_ACCDET)   +=  accdet/
 
 ifeq ($(CONFIG_MTK_SENSOR_SUPPORT),y)
